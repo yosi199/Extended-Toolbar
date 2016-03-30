@@ -19,9 +19,9 @@ import smart_toolbar.animations.ToolbarAnimation;
 public class SmartToolbar extends Toolbar implements
         ToolbarViews {
 
+    private static final int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
     private View mTopLayout;
     private View mBottomLayout;
-    private static final int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
     private ToolbarAnimation mAnimation;
     private boolean mBottomShown;
 
@@ -116,6 +116,7 @@ public class SmartToolbar extends Toolbar implements
 
     public void setAnimation(ToolbarAnimation animation) {
         mAnimation = animation;
+        mAnimation.onViewsCreated();
     }
 
     public ToolbarAnimation getToolbarAnimation() {

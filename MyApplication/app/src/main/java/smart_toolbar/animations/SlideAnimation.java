@@ -36,4 +36,13 @@ public class SlideAnimation extends BaseToolbarAnimation {
             visibleView.setTranslationY(TOOLBAR_HEIGHT + value);
         }
     }
+
+    @Override
+    public void onViewsCreated() {
+        getHiddenView().setAlpha(1f);
+        getVisibleView().setAlpha(1f);
+
+        getHiddenView().setTranslationY(-TOOLBAR_HEIGHT);
+        getVisibleView().setTranslationY(0);
+    }
 }

@@ -11,4 +11,6 @@ public interface ToolbarAnimation {
 
     boolean isRunning();
 
+    void onViewsCreated();
+
 }

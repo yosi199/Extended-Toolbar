@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
@@ -23,8 +22,8 @@ public abstract class BaseToolbarAnimation implements
         Animator.AnimatorListener {
 
     public static final int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-    private ValueAnimator mValueAnimator = new ValueAnimator();
     private final ToolbarViews mToolbarViews;
+    private ValueAnimator mValueAnimator = new ValueAnimator();
     private boolean isReversing;
 
     public BaseToolbarAnimation(ToolbarViews toolbarViews) {
@@ -86,7 +85,6 @@ public abstract class BaseToolbarAnimation implements
     @Override
     public abstract void onAnimationUpdate(ValueAnimator animation);
 
-//    public abstract void onViewsCreated();
 
     @Override
     public void onAnimationStart(Animator animation) {
