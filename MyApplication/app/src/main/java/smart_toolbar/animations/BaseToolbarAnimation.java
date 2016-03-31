@@ -6,10 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.RelativeLayout;
 
-import com.example.yosimizrachi.smarttoolbar.App;
-import com.example.yosimizrachi.smarttoolbar.R;
-
+import smart_toolbar.base.SmartToolbar;
 import smart_toolbar.base.ToolbarViews;
 
 
@@ -21,18 +20,18 @@ public abstract class BaseToolbarAnimation implements
         ValueAnimator.AnimatorUpdateListener,
         Animator.AnimatorListener {
 
-    public static final int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
     private final ToolbarViews mToolbarViews;
-    private ValueAnimator mValueAnimator = new ValueAnimator();
+    public int mHeight = SmartToolbar.TOOLBAR_HEIGHT;
     private boolean isReversing;
+    private ValueAnimator mValueAnimator = new ValueAnimator();
 
     public BaseToolbarAnimation(ToolbarViews toolbarViews) {
         mToolbarViews = toolbarViews;
         init();
     }
 
-    private void init() {
-        mValueAnimator.setFloatValues(0, -TOOLBAR_HEIGHT);
+    public void init() {
+        mValueAnimator.setFloatValues(0, -mHeight);
         mValueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         mValueAnimator.setDuration(300);
         mValueAnimator.addUpdateListener(this);
@@ -66,6 +65,13 @@ public abstract class BaseToolbarAnimation implements
         } else {
             return false;
         }
+    }
+
+    @Override
+    public final void onRootLayoutChanges(RelativeLayout.LayoutParams params) {
+        mHeight = params.height;
+        init();
+        onViewsCreated();
     }
 
     public boolean isReversing() {

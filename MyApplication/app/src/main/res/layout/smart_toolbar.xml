@@ -3,8 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="@dimen/toolbar_height"
     android:layout_gravity="center"
+    android:animateLayoutChanges="true"
     android:gravity="center"
     android:orientation="horizontal"
     app:contentInsetLeft="0dp"
@@ -13,13 +14,13 @@
     <FrameLayout
         android:id="@+id/toolbar_inner_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <FrameLayout
             android:id="@+id/toolbar_bottom_layout"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@color/colorPrimary"
             android:gravity="center"
@@ -31,7 +32,7 @@
         <FrameLayout
             android:id="@+id/toolbar_top_layout"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="@color/colorAccent"
             android:gravity="center"
@@ -39,7 +40,6 @@
 
 
         </FrameLayout>
-
 
 
     </FrameLayout>

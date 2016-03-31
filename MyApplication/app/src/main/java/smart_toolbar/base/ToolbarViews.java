@@ -12,4 +12,6 @@ public interface ToolbarViews {
     View getHiddenLayout();
 
     void onAnimationEnded();
+
+    int getToolbarHeight();
 }

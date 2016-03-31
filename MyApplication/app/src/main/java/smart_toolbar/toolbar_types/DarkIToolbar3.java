@@ -42,4 +42,5 @@ public class DarkIToolbar3 extends ToolbarViewBase {
     public ToolbarType getType() {
         return null;
     }
+
 }

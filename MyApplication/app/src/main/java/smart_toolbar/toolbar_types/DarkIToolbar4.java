@@ -42,4 +42,10 @@ public class DarkIToolbar4 extends ToolbarViewBase {
     public ToolbarType getType() {
         return null;
     }
+
+    @Override
+    public int getToolbarViewHeight() {
+        return App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height2);
+//        return 0;
+    }
 }

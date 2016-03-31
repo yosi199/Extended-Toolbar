@@ -10,8 +10,6 @@
     <include
         android:id="@+id/smart_toolbar"
         layout="@layout/smart_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
         android:gravity="center"/>
 
 

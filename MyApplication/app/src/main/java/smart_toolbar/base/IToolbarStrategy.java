@@ -19,5 +19,6 @@ public interface IToolbarStrategy {
 
     ToolbarType getType();
 
+    int getToolbarViewHeight();
 
 }

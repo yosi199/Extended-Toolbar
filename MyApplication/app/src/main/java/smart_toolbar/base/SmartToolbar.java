@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
@@ -20,11 +21,11 @@ import smart_toolbar.animations.ToolbarAnimation;
 public class SmartToolbar extends Toolbar implements
         ToolbarViews {
 
-    private static final int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+    public static int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+    private boolean mBottomShown;
     private View mTopLayout;
     private View mBottomLayout;
     private ToolbarAnimation mAnimation;
-    private boolean mBottomShown;
     private IToolbarStrategy mPendingToolbar = null;
     private IToolbarStrategy mLoadedToolbar = null;
 
@@ -99,6 +100,7 @@ public class SmartToolbar extends Toolbar implements
         // if there is a toolbar waiting to be loaded
         // then load again and reset toolbar
         if (mPendingToolbar != null) {
+            // todo - handle lifecycle for handler
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -107,8 +109,26 @@ public class SmartToolbar extends Toolbar implements
                     }
                 }
             }, 100);
-
         }
+    }
+
+    @Override
+    public int getToolbarHeight() {
+        return TOOLBAR_HEIGHT;
+    }
+
+    public void animateHeight(int newHeight) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
+        int height = params.height;
+        if (newHeight == height || newHeight == 0) {
+            return;
+        }
+
+        params.height = newHeight;
+        setLayoutParams(params);
+        mAnimation = new SlideAnimation(this);
+//        mAnimation.onRootLayoutChanges(params);
+
     }
 
     /**
@@ -127,6 +147,9 @@ public class SmartToolbar extends Toolbar implements
                 mPendingToolbar = nextToolbar;
                 return false;
             } else {
+
+//                animateHeight(nextToolbar.getToolbarViewHeight());
+
                 // get hidden layout, remove previous views from it and load the new layout
                 FrameLayout hiddenLayout = (FrameLayout) getHiddenLayout();
                 hiddenLayout.removeAllViews();

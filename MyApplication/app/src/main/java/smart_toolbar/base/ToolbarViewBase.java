@@ -63,4 +63,9 @@ public class ToolbarViewBase extends FrameLayout implements IToolbarStrategy {
         return null;
     }
 
+    @Override
+    public int getToolbarViewHeight() {
+        return 0;
+    }
+
 }

@@ -1,5 +1,7 @@
 package smart_toolbar.animations;
 
+import android.widget.RelativeLayout;
+
 /**
  * Created by yosimizrachi on 29/03/2016.
  */
@@ -12,5 +14,7 @@ public interface ToolbarAnimation {
     boolean isRunning();
 
     void onViewsCreated();
+
+    void onRootLayoutChanges(RelativeLayout.LayoutParams params);
 
 }

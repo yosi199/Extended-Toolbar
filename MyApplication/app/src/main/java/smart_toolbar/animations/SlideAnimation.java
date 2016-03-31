@@ -16,7 +16,7 @@ public class SlideAnimation extends BaseToolbarAnimation {
 
     @Override
     void initAnimator(ValueAnimator animator) {
-        animator.setFloatValues(-TOOLBAR_HEIGHT, 0);
+        animator.setFloatValues(-mHeight, 0);
     }
 
 
@@ -29,11 +29,11 @@ public class SlideAnimation extends BaseToolbarAnimation {
         View hiddenView = getHiddenView();
 
         if (isReversing()) {
-            hiddenView.setTranslationY(TOOLBAR_HEIGHT + value);
+            hiddenView.setTranslationY(mHeight + value);
             visibleView.setTranslationY(value);
         } else {
             hiddenView.setTranslationY(value);
-            visibleView.setTranslationY(TOOLBAR_HEIGHT + value);
+            visibleView.setTranslationY(mHeight + value);
         }
     }
 
@@ -42,7 +42,7 @@ public class SlideAnimation extends BaseToolbarAnimation {
         getHiddenView().setAlpha(1f);
         getVisibleView().setAlpha(1f);
 
-        getHiddenView().setTranslationY(-TOOLBAR_HEIGHT);
+        getHiddenView().setTranslationY(-mHeight);
         getVisibleView().setTranslationY(0);
     }
 }
