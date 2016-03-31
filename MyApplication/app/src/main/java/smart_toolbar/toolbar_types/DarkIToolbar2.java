@@ -10,6 +10,7 @@ import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
 import smart_toolbar.base.IToolbarStrategy;
+import smart_toolbar.base.ToolbarType;
 import smart_toolbar.base.ToolbarViewBase;
 
 
@@ -31,13 +32,18 @@ public class DarkIToolbar2 extends ToolbarViewBase implements View.OnClickListen
         super(context, attrs, defStyleAttr);
     }
 
+    public static IToolbarStrategy getInstance() {
+        return (IToolbarStrategy) LayoutInflater.from(App.getAppContext()).inflate(R.layout.dark_toolbar2, null, false);
+    }
+
     @Override
     public void setTitle(String title) {
 
     }
 
-    public static IToolbarStrategy getInstance() {
-        return (IToolbarStrategy) LayoutInflater.from(App.getAppContext()).inflate(R.layout.dark_toolbar2, null, false);
+    @Override
+    public ToolbarType getType() {
+        return null;
     }
 
     @Override

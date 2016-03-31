@@ -1,6 +1,7 @@
 package smart_toolbar.base;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
@@ -24,6 +25,8 @@ public class SmartToolbar extends Toolbar implements
     private View mBottomLayout;
     private ToolbarAnimation mAnimation;
     private boolean mBottomShown;
+    private IToolbarStrategy mPendingToolbar = null;
+    private IToolbarStrategy mLoadedToolbar = null;
 
 
     public SmartToolbar(Context context) {
@@ -92,6 +95,20 @@ public class SmartToolbar extends Toolbar implements
         } else {
             mBottomShown = true;
         }
+
+        // if there is a toolbar waiting to be loaded
+        // then load again and reset toolbar
+        if (mPendingToolbar != null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (next(mPendingToolbar)) {
+                        mPendingToolbar = null;
+                    }
+                }
+            }, 100);
+
+        }
     }
 
     /**
@@ -102,15 +119,24 @@ public class SmartToolbar extends Toolbar implements
      *
      * @param nextToolbar the toolbar to display in the next available layout
      */
-    public void loadNext(@NonNull IToolbarStrategy nextToolbar) {
-        if (mAnimation != null && mAnimation.isRunning()) {
-            return;
-        }
+    public boolean next(@NonNull IToolbarStrategy nextToolbar) {
         if (nextToolbar != null) {
-            FrameLayout hiddenLayout = (FrameLayout) getHiddenLayout();
-            hiddenLayout.removeAllViews();
-            hiddenLayout.addView((View) nextToolbar);
-            switchViews();
+            // if different toolbar is loaded while animation is running,
+            // set as pending and execute when animation finish.
+            if (mAnimation != null && mAnimation.isRunning()) {
+                mPendingToolbar = nextToolbar;
+                return false;
+            } else {
+                // get hidden layout, remove previous views from it and load the new layout
+                FrameLayout hiddenLayout = (FrameLayout) getHiddenLayout();
+                hiddenLayout.removeAllViews();
+                hiddenLayout.addView((View) nextToolbar);
+                switchViews();
+                mLoadedToolbar = mPendingToolbar;
+                return true;
+            }
+        } else {
+            return false;
         }
     }
 
@@ -121,6 +147,10 @@ public class SmartToolbar extends Toolbar implements
 
     public ToolbarAnimation getToolbarAnimation() {
         return mAnimation;
+    }
+
+    public IToolbarStrategy getLoadedToolbar() {
+        return mLoadedToolbar;
     }
 
 }

@@ -58,4 +58,9 @@ public class ToolbarViewBase extends FrameLayout implements IToolbarStrategy {
 
     }
 
+    @Override
+    public ToolbarType getType() {
+        return null;
+    }
+
 }

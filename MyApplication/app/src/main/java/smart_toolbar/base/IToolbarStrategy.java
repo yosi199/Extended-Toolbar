@@ -17,5 +17,7 @@ public interface IToolbarStrategy {
 
     void setToolbarContext(IToolbarContext toolbarContext);
 
+    ToolbarType getType();
+
 
 }

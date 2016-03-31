@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         toolbar = (SmartToolbar) findViewById(R.id.smart_toolbar);
-        toolbar.loadNext(DarkIToolbar4.getInstance());
+        toolbar.next(DarkIToolbar4.getInstance());
 
         mSwitch1 = findViewById(R.id.switchBtn1);
         mSwitch1.setOnClickListener(this);
@@ -70,6 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }
-        toolbar.loadNext(selectedNext);
+        toolbar.next(selectedNext);
     }
 }

@@ -11,6 +11,7 @@ import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
 import smart_toolbar.base.IToolbarStrategy;
+import smart_toolbar.base.ToolbarType;
 import smart_toolbar.base.ToolbarViewBase;
 
 /**
@@ -62,4 +63,8 @@ public class DarkIToolbar extends ToolbarViewBase implements View.OnClickListene
         }
     }
 
+    @Override
+    public ToolbarType getType() {
+        return null;
+    }
 }
