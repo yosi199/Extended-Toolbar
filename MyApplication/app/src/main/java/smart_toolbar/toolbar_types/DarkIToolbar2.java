@@ -80,4 +80,9 @@ public class DarkIToolbar2 extends ToolbarViewBase implements View.OnClickListen
         }
 
     }
+
+    @Override
+    public int getToolbarViewHeight() {
+        return App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+    }
 }

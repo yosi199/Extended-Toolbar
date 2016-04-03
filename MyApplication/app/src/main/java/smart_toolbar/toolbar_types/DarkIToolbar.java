@@ -82,4 +82,9 @@ public class DarkIToolbar extends ToolbarViewBase implements
     public void setData(ToolbarData data) {
         mTitle.setText(data.title);
     }
+
+    @Override
+    public int getToolbarViewHeight() {
+        return App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+    }
 }
