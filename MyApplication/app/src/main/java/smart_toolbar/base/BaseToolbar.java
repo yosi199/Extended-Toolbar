@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
+import smart_toolbar.animations.SlideAnimation;
 import smart_toolbar.animations.ToolbarAnimation;
 
 /**
@@ -20,23 +21,31 @@ import smart_toolbar.animations.ToolbarAnimation;
 public class BaseToolbar extends Toolbar implements ToolbarViews {
 
     public static int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+    private ToolbarAnimation mAnimation;
     private boolean mBottomShown;
     private View mTopLayout;
     private View mBottomLayout;
-    public ToolbarAnimation mAnimation;
     private IToolbarStrategy mPendingToolbar = null;
     private IToolbarStrategy mLoadedToolbar = null;
+    private Handler mHandler = new Handler();
 
     public BaseToolbar(Context context) {
         super(context);
+        init();
     }
 
     public BaseToolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     public BaseToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
+        mAnimation = new SlideAnimation(this);
     }
 
     @Override
@@ -73,16 +82,23 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
         // if there is a toolbar waiting to be loaded
         // then load again and reset toolbar
         if (mPendingToolbar != null) {
-            // todo - handle lifecycle for handler
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (next(mPendingToolbar)) {
-                        mPendingToolbar = null;
-                    }
-                }
-            }, 100);
+            mHandler.postDelayed(loadPendingRunnable, 100);
         }
+    }
+
+    private Runnable loadPendingRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (next(mPendingToolbar)) {
+                mPendingToolbar = null;
+            }
+        }
+    };
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mHandler.removeCallbacks(loadPendingRunnable);
     }
 
     @Override
@@ -106,32 +122,12 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
                 mPendingToolbar = nextToolbar;
                 return false;
             } else {
-
-//                animateHeight(nextToolbar.getToolbarViewHeight()); //TODO - implement different heights changes
-
-                if (updateOnly(nextToolbar)) {
-                    reloadData(nextToolbar);
-                    return true;
-                } else {
-                    loadToolbar(nextToolbar);
-                    return true;
-                }
+                loadToolbar(nextToolbar);
+                return true;
             }
         } else {
             return false;
         }
-    }
-
-    private boolean updateOnly(IToolbarStrategy nextToolbar) {
-        if ((nextToolbar.getType() != null &&
-                mLoadedToolbar != null &&
-                nextToolbar.getType() == mLoadedToolbar.getType())) {
-            return true;
-        } else return false;
-    }
-
-    private void reloadData(IToolbarStrategy nextToolbar) {
-        mLoadedToolbar.setData(nextToolbar.getData());
     }
 
     private void loadToolbar(IToolbarStrategy nextToolbar) {

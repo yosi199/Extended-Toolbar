@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/smart_toolbar"
-        layout="@layout/smart_toolbar"
+        layout="@layout/toolbar"
         android:gravity="center"/>
 
 

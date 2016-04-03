@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
 
-import smart_toolbar.base.SmartToolbar;
+import smart_toolbar.base.BaseToolbar;
 import smart_toolbar.base.ToolbarViews;
 
 
@@ -21,7 +21,7 @@ public abstract class BaseToolbarAnimation implements
         Animator.AnimatorListener {
 
     private final ToolbarViews mToolbarViews;
-    public int mHeight = SmartToolbar.TOOLBAR_HEIGHT;
+    public int mHeight = BaseToolbar.TOOLBAR_HEIGHT;
     private boolean isReversing;
     private ValueAnimator mValueAnimator = new ValueAnimator();
 
