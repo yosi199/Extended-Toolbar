@@ -37,7 +37,6 @@ public abstract class BaseToolbarAnimation implements
         mValueAnimator.addUpdateListener(this);
         mValueAnimator.addListener(this);
         initAnimator(mValueAnimator);
-
     }
 
     abstract void initAnimator(ValueAnimator animator);
