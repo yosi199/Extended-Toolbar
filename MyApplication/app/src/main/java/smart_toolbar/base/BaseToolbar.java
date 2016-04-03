@@ -53,7 +53,7 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
         mAnimation = new SlideAnimation(this);
         mHeightAnimator = new ValueAnimator();
         mHeightAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        mHeightAnimator.setDuration(200);
+        mHeightAnimator.setDuration(400);
         mHeightAnimator.addUpdateListener(mHeightUpdateListener);
         mHeightAnimator.addListener(this);
     }
@@ -83,16 +83,20 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
 
     @Override
     public void onAnimationEnded() {
-        if (mBottomShown) {
-            mBottomShown = false;
-        } else {
-            mBottomShown = true;
-        }
+        setBottomShown();
 
         // if there is a toolbar waiting to be loaded
         // then load again and reset toolbar
         if (mPendingToolbar != null) {
             mHandler.postDelayed(loadPendingRunnable, 100);
+        }
+    }
+
+    private void setBottomShown() {
+        if (mBottomShown) {
+            mBottomShown = false;
+        } else {
+            mBottomShown = true;
         }
     }
 
@@ -115,14 +119,15 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
             int value = (int) animation.getAnimatedValue();
+//            FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams) getVisibleLayout().getLayoutParams();
+//            params2.height = value;
+//            getVisibleLayout().setLayoutParams(params2);
+//            getHiddenLayout().setLayoutParams(params2);
+
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
             params.height = value;
             setLayoutParams(params);
 
-            FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams) getVisibleLayout().getLayoutParams();
-            params2.height = value;
-            getVisibleLayout().setLayoutParams(params2);
-            getHiddenLayout().setLayoutParams(params2);
         }
     };
 
@@ -166,10 +171,10 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
                 // if next toolbar height is different then current - first animate height and then load
                 // the new toolbar
                 if (animateHeight(nextToolbar)) {
-                    mPendingToolbar = nextToolbar;
                     return false;
                 }
-//                loadToolbar(nextToolbar);
+                mPendingToolbar = null;
+                loadToolbar(nextToolbar);
                 return true;
             }
         } else {
@@ -180,7 +185,6 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
     private void loadToolbar(IToolbarStrategy nextToolbar) {
         // get hidden layout, remove previous views from it and load the new layout
         FrameLayout hiddenLayout = (FrameLayout) getHiddenLayout();
-//        Log.d("TOOLBAR", "HIDDEN IS " + getResources().getResourceName(hiddenLayout.getId()));
         hiddenLayout.removeAllViews();
         hiddenLayout.addView((View) nextToolbar);
         animateLoad();
@@ -220,8 +224,7 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
 
     @Override
     public void onAnimationEnd(Animator animation) {
-
-
+        next(mPendingToolbar);
     }
 
     @Override

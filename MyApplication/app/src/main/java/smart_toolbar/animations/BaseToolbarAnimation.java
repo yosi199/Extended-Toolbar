@@ -33,7 +33,7 @@ public abstract class BaseToolbarAnimation implements
     public void init() {
         mValueAnimator.setFloatValues(0, -mHeight);
         mValueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        mValueAnimator.setDuration(300);
+        mValueAnimator.setDuration(1000);
         mValueAnimator.addUpdateListener(this);
         mValueAnimator.addListener(this);
         initAnimator(mValueAnimator);
