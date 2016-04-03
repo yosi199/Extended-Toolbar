@@ -21,4 +21,8 @@ public interface IToolbarStrategy {
 
     int getToolbarViewHeight();
 
+    ToolbarData getData();
+
+    void setData(ToolbarData data);
+
 }

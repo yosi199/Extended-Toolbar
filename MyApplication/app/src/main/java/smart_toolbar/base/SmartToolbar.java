@@ -1,5 +1,6 @@
 package smart_toolbar.base;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -117,17 +118,28 @@ public class SmartToolbar extends Toolbar implements
         return TOOLBAR_HEIGHT;
     }
 
-    public void animateHeight(int newHeight) {
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
+    public void animateHeight(final int newHeight) {
+        final RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
         int height = params.height;
         if (newHeight == height || newHeight == 0) {
             return;
         }
 
-        params.height = newHeight;
-        setLayoutParams(params);
-        mAnimation = new SlideAnimation(this);
-//        mAnimation.onRootLayoutChanges(params);
+        ValueAnimator heightAnimator = new ValueAnimator();
+        heightAnimator.setIntValues(height, newHeight);
+        heightAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int value = (int) animation.getAnimatedValue();
+                params.height = value;
+                setLayoutParams(params);
+            }
+        });
+        heightAnimator.setDuration(300);
+        heightAnimator.start();
+
+
+        mAnimation.onRootLayoutChanges(params);
 
     }
 
@@ -148,19 +160,40 @@ public class SmartToolbar extends Toolbar implements
                 return false;
             } else {
 
-//                animateHeight(nextToolbar.getToolbarViewHeight());
+//                animateHeight(nextToolbar.getToolbarViewHeight()); //TODO - implement different heights changes
 
-                // get hidden layout, remove previous views from it and load the new layout
-                FrameLayout hiddenLayout = (FrameLayout) getHiddenLayout();
-                hiddenLayout.removeAllViews();
-                hiddenLayout.addView((View) nextToolbar);
-                switchViews();
-                mLoadedToolbar = mPendingToolbar;
-                return true;
+                if (updateOnly(nextToolbar)) {
+                    reloadData(nextToolbar);
+                    return true;
+                } else {
+                    loadToolbar(nextToolbar);
+                    return true;
+                }
             }
         } else {
             return false;
         }
+    }
+
+    private boolean updateOnly(IToolbarStrategy nextToolbar) {
+        if ((nextToolbar.getType() != null &&
+                mLoadedToolbar != null &&
+                nextToolbar.getType() == mLoadedToolbar.getType())) {
+            return true;
+        } else return false;
+    }
+
+    private void reloadData(IToolbarStrategy nextToolbar) {
+        mLoadedToolbar.setData(nextToolbar.getData());
+    }
+
+    private void loadToolbar(IToolbarStrategy nextToolbar) {
+        // get hidden layout, remove previous views from it and load the new layout
+        FrameLayout hiddenLayout = (FrameLayout) getHiddenLayout();
+        hiddenLayout.removeAllViews();
+        hiddenLayout.addView((View) nextToolbar);
+        switchViews();
+        mLoadedToolbar = nextToolbar;
     }
 
     public void setAnimation(ToolbarAnimation animation) {

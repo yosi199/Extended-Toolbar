@@ -9,7 +9,7 @@ import android.widget.TextView;
 /**
  * Created by yosimizrachi on 29/03/2016.
  */
-public class ToolbarViewBase extends FrameLayout implements IToolbarStrategy {
+public abstract class ToolbarViewBase extends FrameLayout implements IToolbarStrategy {
 
     public TextView mTitle;
     public Button mLeftBtn;
@@ -60,12 +60,19 @@ public class ToolbarViewBase extends FrameLayout implements IToolbarStrategy {
 
     @Override
     public ToolbarType getType() {
-        return null;
+        return getToolbarType();
     }
+
 
     @Override
     public int getToolbarViewHeight() {
         return 0;
     }
+
+    public abstract ToolbarType getToolbarType();
+
+    public abstract ToolbarData getData();
+
+    public abstract void setData(ToolbarData data);
 
 }

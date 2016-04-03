@@ -10,6 +10,7 @@ import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
 import smart_toolbar.base.IToolbarStrategy;
+import smart_toolbar.base.ToolbarData;
 import smart_toolbar.base.ToolbarType;
 import smart_toolbar.base.ToolbarViewBase;
 
@@ -42,8 +43,21 @@ public class DarkIToolbar2 extends ToolbarViewBase implements View.OnClickListen
     }
 
     @Override
-    public ToolbarType getType() {
-        return null;
+    public ToolbarType getToolbarType() {
+        return ToolbarType.DARK2;
+    }
+
+
+    @Override
+    public ToolbarData getData() {
+        ToolbarData data = new ToolbarData();
+        data.title = "Yosi The King 2";
+        return data;
+    }
+
+    @Override
+    public void setData(ToolbarData data) {
+
     }
 
     @Override

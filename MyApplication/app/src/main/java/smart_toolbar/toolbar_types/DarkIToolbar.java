@@ -11,13 +11,15 @@ import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
 import smart_toolbar.base.IToolbarStrategy;
+import smart_toolbar.base.ToolbarData;
 import smart_toolbar.base.ToolbarType;
 import smart_toolbar.base.ToolbarViewBase;
 
 /**
  * Created by yosimizrachi on 21/03/2016.
  */
-public class DarkIToolbar extends ToolbarViewBase implements View.OnClickListener {
+public class DarkIToolbar extends ToolbarViewBase implements
+        View.OnClickListener {
 
     public DarkIToolbar(Context context) {
         super(context);
@@ -33,6 +35,11 @@ public class DarkIToolbar extends ToolbarViewBase implements View.OnClickListene
 
     public static IToolbarStrategy getInstance() {
         return (IToolbarStrategy) LayoutInflater.from(App.getAppContext()).inflate(R.layout.dark_toolbar, null, false);
+    }
+
+    @Override
+    public ToolbarType getToolbarType() {
+        return ToolbarType.DARK4;
     }
 
     @Override
@@ -63,8 +70,16 @@ public class DarkIToolbar extends ToolbarViewBase implements View.OnClickListene
         }
     }
 
+
     @Override
-    public ToolbarType getType() {
-        return null;
+    public ToolbarData getData() {
+        ToolbarData data = new ToolbarData();
+        data.title = "Yosi The King 4 - 4";
+        return data;
+    }
+
+    @Override
+    public void setData(ToolbarData data) {
+        mTitle.setText(data.title);
     }
 }

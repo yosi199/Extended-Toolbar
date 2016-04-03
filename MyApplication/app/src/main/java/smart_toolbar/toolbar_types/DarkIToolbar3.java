@@ -8,6 +8,7 @@ import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
 import smart_toolbar.base.IToolbarStrategy;
+import smart_toolbar.base.ToolbarData;
 import smart_toolbar.base.ToolbarType;
 import smart_toolbar.base.ToolbarViewBase;
 
@@ -38,9 +39,26 @@ public class DarkIToolbar3 extends ToolbarViewBase {
 
     }
 
+
     @Override
-    public ToolbarType getType() {
-        return null;
+    public int getToolbarViewHeight() {
+        return App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
     }
 
+    @Override
+    public ToolbarType getToolbarType() {
+        return ToolbarType.DARK3;
+    }
+
+    @Override
+    public ToolbarData getData() {
+        ToolbarData data = new ToolbarData();
+        data.title = "Yosi The King 3";
+        return data;
+    }
+
+    @Override
+    public void setData(ToolbarData data) {
+
+    }
 }
