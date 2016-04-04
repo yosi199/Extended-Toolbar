@@ -33,7 +33,7 @@ public abstract class BaseToolbarAnimation implements
     public void init() {
         mValueAnimator.setFloatValues(0, -mHeight);
         mValueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        mValueAnimator.setDuration(1000);
+        mValueAnimator.setDuration(300);
         mValueAnimator.addUpdateListener(this);
         mValueAnimator.addListener(this);
         initAnimator(mValueAnimator);
@@ -69,8 +69,8 @@ public abstract class BaseToolbarAnimation implements
     @Override
     public final void onRootLayoutChanges(RelativeLayout.LayoutParams params) {
         mHeight = params.height;
-        init();
-        onViewsCreated();
+        getHiddenView().setTranslationY(mHeight);
+        initAnimator(mValueAnimator);
     }
 
     public boolean isReversing() {

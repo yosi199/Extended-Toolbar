@@ -72,6 +72,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
         toolbar.next(selectedNext);
-        toolbar.setAnimation(new SlideAnimation(toolbar));
     }
 }

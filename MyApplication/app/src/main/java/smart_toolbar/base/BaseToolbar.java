@@ -53,7 +53,7 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
         mAnimation = new SlideAnimation(this);
         mHeightAnimator = new ValueAnimator();
         mHeightAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        mHeightAnimator.setDuration(400);
+        mHeightAnimator.setDuration(200);
         mHeightAnimator.addUpdateListener(mHeightUpdateListener);
         mHeightAnimator.addListener(this);
     }
@@ -119,14 +119,13 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
         @Override
         public void onAnimationUpdate(ValueAnimator animation) {
             int value = (int) animation.getAnimatedValue();
-//            FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams) getVisibleLayout().getLayoutParams();
-//            params2.height = value;
-//            getVisibleLayout().setLayoutParams(params2);
-//            getHiddenLayout().setLayoutParams(params2);
 
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
             params.height = value;
             setLayoutParams(params);
+
+            mAnimation.onRootLayoutChanges(params);
+
 
         }
     };
