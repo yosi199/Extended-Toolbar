@@ -126,7 +126,6 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
 
             mAnimation.onRootLayoutChanges(params);
 
-
         }
     };
 
@@ -150,7 +149,6 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
 
     }
 
-
     /**
      * Set up and switch to the next toolbar view
      * <p/>
@@ -170,6 +168,7 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
                 // if next toolbar height is different then current - first animate height and then load
                 // the new toolbar
                 if (animateHeight(nextToolbar)) {
+                    // return false because loading is handled inside
                     return false;
                 }
                 mPendingToolbar = null;
