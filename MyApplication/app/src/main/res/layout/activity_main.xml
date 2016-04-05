@@ -9,9 +9,8 @@
 
     <include
         android:id="@+id/smart_toolbar"
-        layout="@layout/toolbar"
+        layout="@layout/height_toolbar"
         android:gravity="center"/>
-
 
     <Button
         android:id="@+id/switchBtn1"

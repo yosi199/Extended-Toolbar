@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<smart_toolbar.base.CustomHeightToolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_height"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal"
+    app:contentInsetLeft="0dp"
+    app:contentInsetStart="0dp">
+
+    <FrameLayout
+        android:id="@+id/toolbar_inner_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/toolbar_bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:orientation="vertical">
+
+        </FrameLayout>
+
+
+        <FrameLayout
+            android:id="@+id/toolbar_top_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+        </FrameLayout>
+
+
+    </FrameLayout>
+
+</smart_toolbar.base.CustomHeightToolbar>

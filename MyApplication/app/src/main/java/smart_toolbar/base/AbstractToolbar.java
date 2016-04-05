@@ -1,7 +1,6 @@
 package smart_toolbar.base;
 
 import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -9,9 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 
 import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
@@ -20,42 +17,38 @@ import smart_toolbar.animations.SlideAnimation;
 import smart_toolbar.animations.ToolbarAnimation;
 
 /**
- * Created by yosimizrachi on 03/04/2016.
+ * Created by yosimizrachi on 05/04/2016.
  */
-public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.AnimatorListener {
+public class AbstractToolbar extends Toolbar implements ToolbarViews {
 
-    public static int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+    private static int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+    private ToolbarAnimation mPrimaryAnimation;
+    private Animator mSecondaryAnimator;
     private IToolbarStrategy mPendingToolbar = null;
     private IToolbarStrategy mLoadedToolbar = null;
-    private ToolbarAnimation mAnimation;
-    private Handler mHandler = new Handler();
-    private ValueAnimator mHeightAnimator;
+    private final Handler mHandler = new Handler();
     private View mTopLayout;
     private View mBottomLayout;
     private boolean mBottomShown;
 
-    public BaseToolbar(Context context) {
+
+    public AbstractToolbar(Context context) {
         super(context);
         init();
     }
 
-    public BaseToolbar(Context context, @Nullable AttributeSet attrs) {
+    public AbstractToolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public BaseToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public AbstractToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     private void init() {
-        mAnimation = new SlideAnimation(this);
-        mHeightAnimator = new ValueAnimator();
-        mHeightAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        mHeightAnimator.setDuration(200);
-        mHeightAnimator.addUpdateListener(mHeightUpdateListener);
-        mHeightAnimator.addListener(this);
+        mPrimaryAnimation = new SlideAnimation(this);
     }
 
     @Override
@@ -68,21 +61,18 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
         mBottomShown = false;
     }
 
-    /**
-     * Gets whichever layout is not displayed on screen
-     *
-     * @return the layout who is invisible at the moment.
-     */
-    public View getVisibleLayout() {
+    @Override
+    public final View getVisibleLayout() {
         return mBottomShown ? mBottomLayout : mTopLayout;
     }
 
-    public View getHiddenLayout() {
+    @Override
+    public final View getHiddenLayout() {
         return mBottomShown ? mTopLayout : mBottomLayout;
     }
 
     @Override
-    public void onAnimationEnded() {
+    public final void onAnimationEnded() {
         setBottomShown();
 
         // if there is a toolbar waiting to be loaded
@@ -92,7 +82,17 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
         }
     }
 
-    private void setBottomShown() {
+    @Override
+    public int getToolbarHeight() {
+        return TOOLBAR_HEIGHT;
+    }
+
+    @Override
+    public void setToolbarHeight(int newHeight) {
+        TOOLBAR_HEIGHT = newHeight;
+    }
+
+    private final void setBottomShown() {
         if (mBottomShown) {
             mBottomShown = false;
         } else {
@@ -100,7 +100,7 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
         }
     }
 
-    private Runnable loadPendingRunnable = new Runnable() {
+    private final Runnable loadPendingRunnable = new Runnable() {
         @Override
         public void run() {
             if (next(mPendingToolbar)) {
@@ -113,46 +113,22 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mHandler.removeCallbacks(loadPendingRunnable);
+        mTopLayout = null;
+        mBottomLayout = null;
     }
 
-    private ValueAnimator.AnimatorUpdateListener mHeightUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
-        @Override
-        public void onAnimationUpdate(ValueAnimator animation) {
-            int value = (int) animation.getAnimatedValue();
 
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
-            params.height = value;
-            setLayoutParams(params);
-
-            mAnimation.onRootLayoutChanges(params);
-
-        }
-    };
-
-    @Override
-    public int getToolbarHeight() {
-        return TOOLBAR_HEIGHT;
+    /**
+     * Performs the pre animation before loading the next toolbar
+     *
+     * @param nextToolbar the next toolbar to load
+     * @return true if the pre-animation loads the toolbar inside this method body, so it wont load it again.
+     * Return false otherwise
+     */
+    public boolean onPerformPreAnimation(IToolbarStrategy nextToolbar) {
+        return false;
     }
 
-    @Override
-    public void setToolbarHeight(int newHeight) {
-
-    }
-
-    private boolean animateHeight(IToolbarStrategy nextToolbar) {
-        int newHeight = nextToolbar.getToolbarViewHeight();
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
-        int height = params.height;
-        if (newHeight == height || newHeight == 0) {
-            return false;
-        }
-        mPendingToolbar = nextToolbar;
-        mHeightAnimator.setIntValues(TOOLBAR_HEIGHT, newHeight);
-        mHeightAnimator.start();
-        TOOLBAR_HEIGHT = newHeight;
-        return true;
-
-    }
 
     /**
      * Set up and switch to the next toolbar view
@@ -166,13 +142,13 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
         if (nextToolbar != null) {
             // if different toolbar is loaded while animation is running,
             // set as pending and execute when animation finish.
-            if (mAnimation != null && mAnimation.isRunning()) {
+            if (mPrimaryAnimation != null && mPrimaryAnimation.isRunning()) {
                 mPendingToolbar = nextToolbar;
                 return false;
             } else {
                 // if next toolbar height is different then current - first animate height and then load
                 // the new toolbar
-                if (animateHeight(nextToolbar)) {
+                if (onPerformPreAnimation(nextToolbar)) {
                     // return false because loading is handled inside
                     return false;
                 }
@@ -194,49 +170,74 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
         mLoadedToolbar = nextToolbar;
     }
 
+    public final IToolbarStrategy getPendingToolbar() {
+        return mPendingToolbar;
+    }
+
+    public final void setPendingToolbar(IToolbarStrategy pendingToolbar) {
+        mPendingToolbar = pendingToolbar;
+    }
+
+    public final IToolbarStrategy getLoadedToolbar() {
+        return mLoadedToolbar;
+    }
+
     private void animateLoad() {
 
-        if (mAnimation != null) {
-            if (!mAnimation.isRunning()) {
+        if (mPrimaryAnimation != null) {
+            if (!mPrimaryAnimation.isRunning()) {
                 if (mBottomShown) {
-                    mAnimation.reverse();
+                    mPrimaryAnimation.reverse();
                 } else {
-                    mAnimation.start();
+                    mPrimaryAnimation.start();
                 }
             }
         }
     }
 
-    public void setAnimation(ToolbarAnimation animation) {
-        mAnimation = animation;
-        mAnimation.onAnimationSet();
+    public final void setPrimaryToolbarAnimation(ToolbarAnimation animation) {
+        mPrimaryAnimation = animation;
+        mPrimaryAnimation.onAnimationSet();
     }
 
-    public ToolbarAnimation getToolbarAnimation() {
-        return mAnimation;
+    public final ToolbarAnimation getPrimaryToolbarAnimation() {
+        return mPrimaryAnimation;
     }
 
-    public IToolbarStrategy getLoadedToolbar() {
-        return mLoadedToolbar;
+    public final void setSecondaryAnimator(Animator secondaryAnimator) {
+        mSecondaryAnimator = secondaryAnimator;
+        mSecondaryAnimator.addListener(mSecondaryListener);
     }
 
-    @Override
-    public void onAnimationStart(Animator animation) {
+    public final Animator getSecondaryAnimator() {
+        return mSecondaryAnimator;
+    }
+
+    private final Animator.AnimatorListener mSecondaryListener = new Animator.AnimatorListener() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            next(mPendingToolbar);
+            onSecondaryAnimationEnded(animation);
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+    };
+
+    public void onSecondaryAnimationEnded(Animator animator) {
 
     }
 
-    @Override
-    public void onAnimationEnd(Animator animation) {
-        next(mPendingToolbar);
-    }
-
-    @Override
-    public void onAnimationCancel(Animator animation) {
-
-    }
-
-    @Override
-    public void onAnimationRepeat(Animator animation) {
-
-    }
 }

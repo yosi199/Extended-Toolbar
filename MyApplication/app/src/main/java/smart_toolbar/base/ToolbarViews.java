@@ -14,4 +14,6 @@ public interface ToolbarViews {
     void onAnimationEnded();
 
     int getToolbarHeight();
+
+    void setToolbarHeight(int newHeight);
 }

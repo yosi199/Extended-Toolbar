@@ -6,7 +6,7 @@ import android.view.View;
 
 import smart_toolbar.animations.FadeAnimation;
 import smart_toolbar.animations.SlideAnimation;
-import smart_toolbar.base.BaseToolbar;
+import smart_toolbar.base.AbstractToolbar;
 import smart_toolbar.base.IToolbarStrategy;
 import smart_toolbar.toolbar_types.DarkIToolbar;
 import smart_toolbar.toolbar_types.DarkIToolbar2;
@@ -15,7 +15,7 @@ import smart_toolbar.toolbar_types.DarkIToolbar4;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private BaseToolbar toolbar;
+    private AbstractToolbar toolbar;
     private View mSwitch1;
     private View mSwitch2;
     private View mSwitch3;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (BaseToolbar) findViewById(R.id.smart_toolbar);
+        toolbar = (AbstractToolbar) findViewById(R.id.smart_toolbar);
         toolbar.next(DarkIToolbar.getInstance());
 
         mSwitch1 = findViewById(R.id.switchBtn1);
@@ -64,10 +64,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 selectedNext = DarkIToolbar4.getInstance();
                 break;
             case R.id.changeAnim:
-                if (toolbar.getToolbarAnimation() instanceof SlideAnimation) {
-                    toolbar.setAnimation(new FadeAnimation(toolbar));
+                if (toolbar.getPrimaryToolbarAnimation() instanceof SlideAnimation) {
+                    toolbar.setPrimaryToolbarAnimation(new FadeAnimation(toolbar));
                 } else {
-                    toolbar.setAnimation(new SlideAnimation(toolbar));
+                    toolbar.setPrimaryToolbarAnimation(new SlideAnimation(toolbar));
                 }
                 break;
         }
