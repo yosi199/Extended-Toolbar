@@ -115,6 +115,8 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
         mHandler.removeCallbacks(loadPendingRunnable);
         mTopLayout = null;
         mBottomLayout = null;
+        mPendingToolbar = null;
+        mLoadedToolbar = null;
     }
 
     /**
