@@ -12,7 +12,7 @@ import smart_toolbar.animations.SlideAnimation;
 /**
  * Created by yosimizrachi on 05/04/2016.
  */
-public class CustomHeightToolbar extends AbstractToolbar implements ValueAnimator.AnimatorUpdateListener {
+public class CustomHeightToolbar extends BaseToolbar implements ValueAnimator.AnimatorUpdateListener {
 
     private ValueAnimator heightAnimator;
 

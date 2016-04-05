@@ -6,7 +6,7 @@ import android.view.View;
 
 import smart_toolbar.animations.FadeAnimation;
 import smart_toolbar.animations.SlideAnimation;
-import smart_toolbar.base.AbstractToolbar;
+import smart_toolbar.base.BaseToolbar;
 import smart_toolbar.base.IToolbarStrategy;
 import smart_toolbar.toolbar_types.DarkIToolbar;
 import smart_toolbar.toolbar_types.DarkIToolbar2;
@@ -15,7 +15,7 @@ import smart_toolbar.toolbar_types.DarkIToolbar4;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private AbstractToolbar toolbar;
+    private BaseToolbar toolbar;
     private View mSwitch1;
     private View mSwitch2;
     private View mSwitch3;
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (AbstractToolbar) findViewById(R.id.smart_toolbar);
+        toolbar = (BaseToolbar) findViewById(R.id.smart_toolbar);
         toolbar.next(DarkIToolbar.getInstance());
 
         mSwitch1 = findViewById(R.id.switchBtn1);
