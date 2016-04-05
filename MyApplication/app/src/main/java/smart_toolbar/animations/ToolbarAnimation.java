@@ -13,8 +13,8 @@ public interface ToolbarAnimation {
 
     boolean isRunning();
 
-    void onAnimationSet();
+    void onNewAnimationSet();
 
-    void onRootLayoutChanges(RelativeLayout.LayoutParams params);
+    void onToolbarLayoutChanges(RelativeLayout.LayoutParams params);
 
 }

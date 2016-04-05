@@ -54,7 +54,7 @@ public abstract class ToolbarViewBase extends FrameLayout implements IToolbarStr
     }
 
     @Override
-    public void setToolbarContext(IToolbarContext toolbarContext) {
+    public void setToolbarController(IToolbarController toolbarContext) {
 
     }
 
@@ -69,8 +69,15 @@ public abstract class ToolbarViewBase extends FrameLayout implements IToolbarStr
         return 0;
     }
 
+    /**
+     * @return the toolbar strategy type
+     */
     public abstract ToolbarType getToolbarType();
 
+    /**
+     * optional getter for inner toolbar data
+     * @return
+     */
     public abstract ToolbarData getData();
 
     public abstract void setData(ToolbarData data);

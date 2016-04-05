@@ -18,17 +18,57 @@ import smart_toolbar.animations.ToolbarAnimation;
 
 /**
  * Created by yosimizrachi on 05/04/2016.
+ * <p/>
+ * The base class for toolbar.
+ * <p/>
+ * With swappable primary animations and optional secondary animation to be performed when different toolbars type are loaded
+ * (Example - different height toolbar will be animate the height adjustment).
  */
-public class BaseToolbar extends Toolbar implements ToolbarViews {
+public class BaseToolbar extends Toolbar implements IToolbarController {
 
+    /**
+     * Default height
+     */
     private static int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+
+    /**
+     * The primary animation to use when loading a new toolbar strategy
+     */
     private ToolbarAnimation mPrimaryAnimation;
+
+    /**
+     * Secondary animation to use when different toolbars loaded
+     */
     private Animator mSecondaryAnimator;
+
+    /**
+     * A toolbar strategy waiting to be loaded once animation ends
+     */
     private IToolbarStrategy mPendingToolbar = null;
+
+    /**
+     * The currently loaded toolbar strategy
+     */
     private IToolbarStrategy mLoadedToolbar = null;
+
+    /**
+     * A handler to schedule delayed operations
+     */
     private final Handler mHandler = new Handler();
+
+    /**
+     * The top/visible layout
+     */
     private View mTopLayout;
+
+    /**
+     * The bottom/hidden layout
+     */
     private View mBottomLayout;
+
+    /**
+     * A boolean indicating which layout is shown at the moment
+     */
     private boolean mBottomShown;
 
 
@@ -72,7 +112,7 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
     }
 
     @Override
-    public final void onAnimationEnded() {
+    public final void onPrimaryAnimationEnded() {
         setBottomShown();
 
         // if there is a toolbar waiting to be loaded
@@ -100,6 +140,8 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
         }
     }
 
+    // if we tried to load a new toolbar strategy while a current load is running
+    // wait for it to finish and load this pending toolbar startegy
     private final Runnable loadPendingRunnable = new Runnable() {
         @Override
         public void run() {
@@ -183,10 +225,6 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
         }
     }
 
-    public final IToolbarStrategy getPendingToolbar() {
-        return mPendingToolbar;
-    }
-
     public final void setPendingToolbar(IToolbarStrategy pendingToolbar) {
         mPendingToolbar = pendingToolbar;
     }
@@ -195,15 +233,28 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
         return mLoadedToolbar;
     }
 
+    /**
+     * Sets the default animation to be used when loading different toolbar strategies.
+     * Example - SlideAnimation will slide-out the previous toolbar and slide-in the next
+     *
+     * @param animation the animation type to use
+     */
     public final void setPrimaryToolbarAnimation(ToolbarAnimation animation) {
         mPrimaryAnimation = animation;
-        mPrimaryAnimation.onAnimationSet();
+        mPrimaryAnimation.onNewAnimationSet();
     }
 
     public final ToolbarAnimation getPrimaryToolbarAnimation() {
         return mPrimaryAnimation;
     }
 
+    /**
+     * Sets the secondary animation to use when the next toolbar is different then current one.
+     * <p/>
+     * Whether a toolbar is different then another, needs to be implemented in the {@link #onPerformPreAnimation(IToolbarStrategy)}
+     *
+     * @param secondaryAnimator the animator to use
+     */
     public final void setSecondaryAnimator(Animator secondaryAnimator) {
         mSecondaryAnimator = secondaryAnimator;
         mSecondaryAnimator.addListener(mSecondaryListener);

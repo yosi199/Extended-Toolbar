@@ -78,7 +78,7 @@ public class CustomHeightToolbar extends BaseToolbar implements ValueAnimator.An
         params.height = value;
         setLayoutParams(params);
 
-        getPrimaryToolbarAnimation().onRootLayoutChanges(params);
+        getPrimaryToolbarAnimation().onToolbarLayoutChanges(params);
 
     }
 }

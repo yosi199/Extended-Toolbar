@@ -3,15 +3,15 @@ package smart_toolbar.animations;
 import android.animation.ValueAnimator;
 import android.view.View;
 
-import smart_toolbar.base.ToolbarViews;
+import smart_toolbar.base.IToolbarController;
 
 /**
  * Created by yosimizrachi on 29/03/2016.
  */
 public class SlideAnimation extends BaseToolbarAnimation {
 
-    public SlideAnimation(ToolbarViews toolbarViews) {
-        super(toolbarViews);
+    public SlideAnimation(IToolbarController toolbarController) {
+        super(toolbarController);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class SlideAnimation extends BaseToolbarAnimation {
     }
 
     @Override
-    public void onAnimationSet() {
+    public void onNewAnimationSet() {
         getHiddenView().setAlpha(1f);
         getVisibleView().setAlpha(1f);
 

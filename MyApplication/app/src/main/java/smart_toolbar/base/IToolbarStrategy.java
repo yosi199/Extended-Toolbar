@@ -15,7 +15,7 @@ public interface IToolbarStrategy {
 
     void setRightImageSrc(String src);
 
-    void setToolbarContext(IToolbarContext toolbarContext);
+    void setToolbarController(IToolbarController toolbarContext);
 
     ToolbarType getType();
 

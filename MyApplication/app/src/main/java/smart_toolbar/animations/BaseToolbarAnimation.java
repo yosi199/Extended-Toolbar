@@ -8,25 +8,42 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
 
-import smart_toolbar.base.ToolbarViews;
+import smart_toolbar.base.IToolbarController;
 
 
 /**
  * Created by yosimizrachi on 29/03/2016.
+ * <p/>
+ * A special value animation class to use for **Primary** toolbar animations.
  */
 public abstract class BaseToolbarAnimation implements
         ToolbarAnimation,
         ValueAnimator.AnimatorUpdateListener,
         Animator.AnimatorListener {
 
-    private final ToolbarViews mToolbarViews;
-    public int mHeight;
-    private boolean isReversing;
-    private ValueAnimator mValueAnimator = new ValueAnimator();
+    /**
+     * Default animator to use
+     */
+    private final ValueAnimator mValueAnimator = new ValueAnimator();
 
-    public BaseToolbarAnimation(ToolbarViews toolbarViews) {
-        mToolbarViews = toolbarViews;
-        mHeight = mToolbarViews.getToolbarHeight();
+    /**
+     * The toolbar interface to have callbacks with
+     */
+    private final IToolbarController mToolbarController;
+
+    /**
+     * boolean indicating whether animation is reversing or not
+     */
+    private boolean isReversing;
+
+    /**
+     * Toolbar height
+     */
+    public int mHeight;
+
+    public BaseToolbarAnimation(IToolbarController toolbarController) {
+        mToolbarController = toolbarController;
+        mHeight = mToolbarController.getToolbarHeight();
         init();
     }
 
@@ -66,8 +83,13 @@ public abstract class BaseToolbarAnimation implements
         }
     }
 
+    /**
+     * If toolbar layout has changed, the animation should be updated accordingly
+     *
+     * @param params the newly changed params
+     */
     @Override
-    public final void onRootLayoutChanges(RelativeLayout.LayoutParams params) {
+    public final void onToolbarLayoutChanges(RelativeLayout.LayoutParams params) {
         mHeight = params.height;
         getHiddenView().setTranslationY(mHeight);
         initAnimator(mValueAnimator);
@@ -79,17 +101,16 @@ public abstract class BaseToolbarAnimation implements
 
     @NonNull
     public View getVisibleView() {
-        return mToolbarViews.getVisibleLayout();
+        return mToolbarController.getVisibleLayout();
     }
 
     @Nullable
     public View getHiddenView() {
-        return mToolbarViews.getHiddenLayout();
+        return mToolbarController.getHiddenLayout();
     }
 
     @Override
     public abstract void onAnimationUpdate(ValueAnimator animation);
-
 
     @Override
     public void onAnimationStart(Animator animation) {
@@ -98,7 +119,7 @@ public abstract class BaseToolbarAnimation implements
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        mToolbarViews.onAnimationEnded();
+        mToolbarController.onPrimaryAnimationEnded();
     }
 
     @Override
