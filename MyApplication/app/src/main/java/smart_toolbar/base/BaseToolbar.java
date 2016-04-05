@@ -117,7 +117,6 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
         mBottomLayout = null;
     }
 
-
     /**
      * Performs the pre animation before loading the next toolbar
      *
@@ -128,7 +127,6 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
     public boolean onPerformPreAnimation(IToolbarStrategy nextToolbar) {
         return false;
     }
-
 
     /**
      * Set up and switch to the next toolbar view
@@ -170,18 +168,6 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
         mLoadedToolbar = nextToolbar;
     }
 
-    public final IToolbarStrategy getPendingToolbar() {
-        return mPendingToolbar;
-    }
-
-    public final void setPendingToolbar(IToolbarStrategy pendingToolbar) {
-        mPendingToolbar = pendingToolbar;
-    }
-
-    public final IToolbarStrategy getLoadedToolbar() {
-        return mLoadedToolbar;
-    }
-
     private void animateLoad() {
 
         if (mPrimaryAnimation != null) {
@@ -193,6 +179,18 @@ public class BaseToolbar extends Toolbar implements ToolbarViews {
                 }
             }
         }
+    }
+
+    public final IToolbarStrategy getPendingToolbar() {
+        return mPendingToolbar;
+    }
+
+    public final void setPendingToolbar(IToolbarStrategy pendingToolbar) {
+        mPendingToolbar = pendingToolbar;
+    }
+
+    public final IToolbarStrategy getLoadedToolbar() {
+        return mLoadedToolbar;
     }
 
     public final void setPrimaryToolbarAnimation(ToolbarAnimation animation) {
