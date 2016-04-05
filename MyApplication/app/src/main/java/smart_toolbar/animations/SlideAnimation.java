@@ -38,7 +38,7 @@ public class SlideAnimation extends BaseToolbarAnimation {
     }
 
     @Override
-    public void onViewsCreated() {
+    public void onAnimationSet() {
         getHiddenView().setAlpha(1f);
         getVisibleView().setAlpha(1f);
 

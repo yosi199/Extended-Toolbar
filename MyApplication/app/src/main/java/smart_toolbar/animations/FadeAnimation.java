@@ -30,7 +30,7 @@ public class FadeAnimation extends BaseToolbarAnimation {
     }
 
     @Override
-    public void onViewsCreated() {
+    public void onAnimationSet() {
 
     }
 }

@@ -204,7 +204,7 @@ public class BaseToolbar extends Toolbar implements ToolbarViews, Animator.Anima
 
     public void setAnimation(ToolbarAnimation animation) {
         mAnimation = animation;
-        mAnimation.onViewsCreated();
+        mAnimation.onAnimationSet();
     }
 
     public ToolbarAnimation getToolbarAnimation() {
