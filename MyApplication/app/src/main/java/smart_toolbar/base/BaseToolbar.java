@@ -13,7 +13,6 @@ import android.widget.FrameLayout;
 import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
-import smart_toolbar.animations.SlideAnimation;
 import smart_toolbar.animations.ToolbarAnimation;
 
 /**
@@ -74,22 +73,16 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
 
     public BaseToolbar(Context context) {
         super(context);
-        init();
     }
 
     public BaseToolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public BaseToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
     }
 
-    private void init() {
-        mPrimaryAnimation = new SlideAnimation(this);
-    }
 
     @Override
     protected void onFinishInflate() {
@@ -97,7 +90,6 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         View view = findViewById(R.id.toolbar_inner_root);
         mTopLayout = view.findViewById(R.id.toolbar_top_layout);
         mBottomLayout = view.findViewById(R.id.toolbar_bottom_layout);
-        mBottomLayout.setTranslationY(-TOOLBAR_HEIGHT);
         mBottomShown = false;
     }
 
@@ -244,6 +236,7 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         mPrimaryAnimation.onNewAnimationSet();
     }
 
+    @Nullable
     public final ToolbarAnimation getPrimaryToolbarAnimation() {
         return mPrimaryAnimation;
     }

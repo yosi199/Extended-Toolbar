@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSwitch4.setOnClickListener(this);
 
         mChangeAnimation = findViewById(R.id.changeAnim);
-        mChangeAnimation.setEnabled(false);
-//        mChangeAnimation.setOnClickListener(this);
+//        mChangeAnimation.setEnabled(false);
+        mChangeAnimation.setOnClickListener(this);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.changeAnim:
                 if (toolbar.getPrimaryToolbarAnimation() instanceof SlideAnimation) {
-                    toolbar.setPrimaryToolbarAnimation(new FadeAnimation(toolbar));
+//                    toolbar.setPrimaryToolbarAnimation(new FadeAnimation(toolbar));
                 } else {
                     toolbar.setPrimaryToolbarAnimation(new SlideAnimation(toolbar));
                 }

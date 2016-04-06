@@ -18,22 +18,16 @@ public class CustomHeightToolbar extends BaseToolbar implements ValueAnimator.An
 
     public CustomHeightToolbar(Context context) {
         super(context);
-        init();
     }
 
     public CustomHeightToolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public CustomHeightToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
     }
 
-    private void init() {
-
-    }
 
     @Override
     protected void onFinishInflate() {
@@ -78,7 +72,9 @@ public class CustomHeightToolbar extends BaseToolbar implements ValueAnimator.An
         params.height = value;
         setLayoutParams(params);
 
-        getPrimaryToolbarAnimation().onToolbarLayoutChanges(params);
+        if (getPrimaryToolbarAnimation() != null) {
+            getPrimaryToolbarAnimation().onToolbarLayoutChanges(params);
+        }
 
     }
 }
