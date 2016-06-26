@@ -15,7 +15,7 @@ import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
 import smart_toolbar.base.animations.ToolbarAnimation;
-import smart_toolbar.base.views.IToolbarView;
+import smart_toolbar.base.views.ToolbarViewInterface;
 
 
 /**
@@ -26,7 +26,7 @@ import smart_toolbar.base.views.IToolbarView;
  * With swappable primary animations and optional secondary animation to be performed when different toolbars type are loaded
  * (Example - different height toolbar will be animate the height adjustment).
  */
-public class BaseToolbar extends Toolbar implements IToolbarController {
+public class BaseToolbar extends Toolbar implements ToolbarControllerInterface {
 
     /**
      * Default height
@@ -47,11 +47,11 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
     /**
      * A toolbar strategy waiting to be loaded once animation ends
      */
-    private IToolbarView mPendingToolbar = null;
+    private ToolbarViewInterface mPendingToolbar = null;
     /**
      * The currently loaded toolbar strategy
      */
-    private IToolbarView mLoadedToolbar = null;
+    private ToolbarViewInterface mLoadedToolbar = null;
     /**
      * The top/visible layout
      */
@@ -188,7 +188,7 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
      * @return true if the pre-animation loads the toolbar inside this method body, so it wont load it again.
      * Return false otherwise
      */
-    public boolean onPerformPreAnimation(IToolbarView nextToolbar) {
+    public boolean onPerformPreAnimation(ToolbarViewInterface nextToolbar) {
         return false;
     }
 
@@ -200,7 +200,7 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
      *
      * @param nextToolbar the toolbar to display in the next available layout
      */
-    public boolean load(@NonNull IToolbarView nextToolbar, ICallbacksListener listener) {
+    public boolean load(@NonNull ToolbarViewInterface nextToolbar, ICallbacksListener listener) {
         if (nextToolbar != null) {
             // if different toolbar is loaded while animation is running,
             // set as pending and execute when animation finish.
@@ -226,11 +226,11 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         }
     }
 
-    public boolean load(@NonNull IToolbarView nextToolbar) {
+    public boolean load(@NonNull ToolbarViewInterface nextToolbar) {
         return load(nextToolbar, mFragmentCallbacks);
     }
 
-    private void loadToolbar(IToolbarView nextToolbar) {
+    private void loadToolbar(ToolbarViewInterface nextToolbar) {
         nextToolbar.setToolbarController(this);
 
         // get hidden layout, remove previous views from it and load the new layout
@@ -253,11 +253,11 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         }
     }
 
-    public final void setPendingToolbar(IToolbarView pendingToolbar) {
+    public final void setPendingToolbar(ToolbarViewInterface pendingToolbar) {
         mPendingToolbar = pendingToolbar;
     }
 
-    public final IToolbarView getLoadedToolbar() {
+    public final ToolbarViewInterface getLoadedToolbar() {
         return mLoadedToolbar;
     }
 
@@ -284,7 +284,7 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
     /**
      * Sets the secondary animation to use when the next toolbar is different then current one.
      * <p/>
-     * Whether a toolbar is different then another, needs to be implemented in the {@link #onPerformPreAnimation(IToolbarView)}
+     * Whether a toolbar is different then another, needs to be implemented in the {@link #onPerformPreAnimation(ToolbarViewInterface)}
      *
      * @param secondaryAnimator the animator to use
      */

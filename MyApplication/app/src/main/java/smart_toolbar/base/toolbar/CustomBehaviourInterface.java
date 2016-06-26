@@ -7,7 +7,7 @@ package smart_toolbar.base.toolbar;
  * Implement this in your own toolbar instance to provide
  * api to communicate with the loaded toolbar views
  */
-public interface ICustomBehaviour extends IBaseBehaviour {
+public interface CustomBehaviourInterface extends BaseBehaviourInterface {
 
     void setRightBtnText(String text);
 
@@ -16,9 +16,5 @@ public interface ICustomBehaviour extends IBaseBehaviour {
     void setLeftImageSrc(String src);
 
     void setRightImageSrc(String src);
-
-    String getPortfolioName();
-
-    void setPortfolioName(String name);
 
 }

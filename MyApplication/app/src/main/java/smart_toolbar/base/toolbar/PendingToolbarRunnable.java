@@ -1,7 +1,7 @@
 package smart_toolbar.base.toolbar;
 
 
-import smart_toolbar.base.views.IToolbarView;
+import smart_toolbar.base.views.ToolbarViewInterface;
 
 /**
  * Created by yosimizrachi on 10/04/2016.
@@ -12,9 +12,9 @@ import smart_toolbar.base.views.IToolbarView;
 public final class PendingToolbarRunnable implements Runnable {
 
     private BaseToolbar mBaseToolbar;
-    private IToolbarView mPendingToolbar;
+    private ToolbarViewInterface mPendingToolbar;
 
-    public PendingToolbarRunnable(BaseToolbar toolbar, IToolbarView pendingToolbar) {
+    public PendingToolbarRunnable(BaseToolbar toolbar, ToolbarViewInterface pendingToolbar) {
         mBaseToolbar = toolbar;
         mPendingToolbar = pendingToolbar;
     }

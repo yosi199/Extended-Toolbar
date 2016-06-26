@@ -1,8 +1,9 @@
 package smart_toolbar.base.animations;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
 
-import smart_toolbar.base.toolbar.IToolbarController;
+import smart_toolbar.base.toolbar.ToolbarControllerInterface;
 
 
 /**
@@ -10,7 +11,7 @@ import smart_toolbar.base.toolbar.IToolbarController;
  */
 public class FadeAnimation extends BaseToolbarAnimation {
 
-    public FadeAnimation(IToolbarController toolbarController) {
+    public FadeAnimation(ToolbarControllerInterface toolbarController) {
         super(toolbarController);
     }
 
@@ -23,14 +24,25 @@ public class FadeAnimation extends BaseToolbarAnimation {
     public void onAnimationUpdate(ValueAnimator animation) {
         float value = (float) animation.getAnimatedValue();
 
-        getVisibleView().setAlpha(1 - value);
-
-        if (getHiddenView() != null) {
+        float sum = 1.0f - value;
+        if (!isReversing()) {
+            getVisibleView().setAlpha(sum);
             getHiddenView().setAlpha(value);
+        } else {
+            getVisibleView().setAlpha(value);
+            getHiddenView().setAlpha(sum);
         }
+    }
+
+
+    @Override
+    public void onAnimationStart(Animator animation) {
+        getHiddenView().setTranslationY(0);
+        getVisibleView().setTranslationY(0);
     }
 
     @Override
     public void onNewAnimationSet() {
+
     }
 }

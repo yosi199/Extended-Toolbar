@@ -9,7 +9,7 @@ import smart_toolbar.base.toolbar.BaseToolbar.ICallbacksListener;
 /**
  * Created by yosimizrachi on 30/03/2016.
  */
-public interface IToolbarController {
+public interface ToolbarControllerInterface {
 
     /**
      * @return the currently visible layout

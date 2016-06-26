@@ -1,9 +1,11 @@
 package smart_toolbar.base.animations;
 
+import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.util.Log;
 import android.view.View;
 
-import smart_toolbar.base.toolbar.IToolbarController;
+import smart_toolbar.base.toolbar.ToolbarControllerInterface;
 
 
 /**
@@ -11,7 +13,7 @@ import smart_toolbar.base.toolbar.IToolbarController;
  */
 public class SlideAnimation extends BaseToolbarAnimation {
 
-    public SlideAnimation(IToolbarController toolbarController) {
+    public SlideAnimation(ToolbarControllerInterface toolbarController) {
         super(toolbarController);
     }
 
@@ -46,4 +48,6 @@ public class SlideAnimation extends BaseToolbarAnimation {
         getHiddenView().setTranslationY(-mHeight);
         getVisibleView().setTranslationY(0);
     }
+
+
 }

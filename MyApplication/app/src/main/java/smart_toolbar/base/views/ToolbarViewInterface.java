@@ -1,13 +1,13 @@
 package smart_toolbar.base.views;
 
 
-import smart_toolbar.base.toolbar.IBaseBehaviour;
-import smart_toolbar.base.toolbar.IToolbarController;
+import smart_toolbar.base.toolbar.BaseBehaviourInterface;
+import smart_toolbar.base.toolbar.ToolbarControllerInterface;
 
 /**
  * Created by yosimizrachi on 21/03/2016.
  */
-public interface IToolbarView extends IBaseBehaviour {
+public interface ToolbarViewInterface extends BaseBehaviourInterface {
 
     void setRightBtnText(String text);
 
@@ -17,7 +17,7 @@ public interface IToolbarView extends IBaseBehaviour {
 
     void setRightImageSrc(String src);
 
-    void setToolbarController(IToolbarController controller);
+    void setToolbarController(ToolbarControllerInterface controller);
 
     String getPortfolioName();
 

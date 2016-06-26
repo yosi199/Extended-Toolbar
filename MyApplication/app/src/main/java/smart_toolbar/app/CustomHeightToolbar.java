@@ -3,15 +3,14 @@ package smart_toolbar.app;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
 
 import smart_toolbar.base.animations.SlideAnimation;
 import smart_toolbar.base.toolbar.BaseToolbar;
-import smart_toolbar.base.toolbar.ICustomBehaviour;
-import smart_toolbar.base.views.IToolbarView;
+import smart_toolbar.base.toolbar.CustomBehaviourInterface;
+import smart_toolbar.base.views.ToolbarViewInterface;
 
 
 /**
@@ -19,7 +18,7 @@ import smart_toolbar.base.views.IToolbarView;
  */
 public class CustomHeightToolbar extends BaseToolbar implements
         ValueAnimator.AnimatorUpdateListener,
-        ICustomBehaviour {
+        CustomBehaviourInterface {
 
     private ValueAnimator heightAnimator;
 
@@ -55,7 +54,7 @@ public class CustomHeightToolbar extends BaseToolbar implements
     }
 
     @Override
-    public boolean onPerformPreAnimation(IToolbarView nextToolbar) {
+    public boolean onPerformPreAnimation(ToolbarViewInterface nextToolbar) {
         int newHeight = nextToolbar.getToolbarViewHeight();
         // layout params type of the parent that nest the toolbar inside it
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
@@ -74,7 +73,7 @@ public class CustomHeightToolbar extends BaseToolbar implements
     public void onAnimationUpdate(ValueAnimator animation) {
         int value = (int) animation.getAnimatedValue();
 
-        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) getLayoutParams();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) getLayoutParams();
         params.height = value;
         setLayoutParams(params);
 
@@ -106,18 +105,6 @@ public class CustomHeightToolbar extends BaseToolbar implements
     public void setRightImageSrc(String src) {
         isToolbarLoaded();
         getLoadedToolbar().setRightImageSrc(src);
-    }
-
-    @Override
-    public String getPortfolioName() {
-        isToolbarLoaded();
-        return getLoadedToolbar().getPortfolioName();
-    }
-
-    @Override
-    public void setPortfolioName(String name) {
-        isToolbarLoaded();
-        getLoadedToolbar().setPortfolioName(name);
     }
 
     @Override

@@ -7,15 +7,15 @@ import android.view.LayoutInflater;
 import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
-import smart_toolbar.base.views.IToolbarView;
+import smart_toolbar.base.views.ToolbarViewInterface;
 import smart_toolbar.base.views.ToolbarType;
-import smart_toolbar.base.views.ToolbarViewBase;
+import smart_toolbar.base.views.ToolbarViewBaseInterface;
 
 /**
  * Created by yosimizrachi on 26/06/2016.
  */
 public class
-ToolbarExample1 extends ToolbarViewBase {
+ToolbarExample1 extends ToolbarViewBaseInterface {
 
 
     public ToolbarExample1(Context context) {
@@ -31,8 +31,8 @@ ToolbarExample1 extends ToolbarViewBase {
     }
 
 
-    public static IToolbarView getInstance() {
-        return (IToolbarView) LayoutInflater.from(App.getAppContext()).inflate(R.layout.toolbar_example1, null, false);
+    public static ToolbarViewInterface getInstance() {
+        return (ToolbarViewInterface) LayoutInflater.from(App.getAppContext()).inflate(R.layout.toolbar_example1, null, false);
     }
 
     @Override
