@@ -1,4 +1,4 @@
-package smart_toolbar.base;
+package smart_toolbar.base.toolbar;
 
 import android.animation.Animator;
 import android.content.Context;
@@ -7,13 +7,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
-import smart_toolbar.animations.ToolbarAnimation;
+import smart_toolbar.base.animations.ToolbarAnimation;
+import smart_toolbar.base.views.IToolbarView;
+
 
 /**
  * Created by yosimizrachi on 05/04/2016.
@@ -29,32 +32,26 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
      * Default height
      */
     private static int TOOLBAR_HEIGHT = App.getAppContext().getResources().getDimensionPixelSize(R.dimen.toolbar_height);
-
-    /**
-     * The primary animation to use when loading a new toolbar strategy
-     */
-    private ToolbarAnimation mPrimaryAnimation;
-
-    /**
-     * Secondary animation to use when different toolbars loaded
-     */
-    private Animator mSecondaryAnimator;
-
-    /**
-     * A toolbar strategy waiting to be loaded once animation ends
-     */
-    private IToolbarStrategy mPendingToolbar = null;
-
-    /**
-     * The currently loaded toolbar strategy
-     */
-    private IToolbarStrategy mLoadedToolbar = null;
-
     /**
      * A handler to schedule delayed operations
      */
     private final Handler mHandler = new Handler();
-
+    /**
+     * The primary animation to use when loading a new toolbar strategy
+     */
+    private ToolbarAnimation mPrimaryAnimation;
+    /**
+     * Secondary animation to use when different toolbars loaded
+     */
+    private Animator mSecondaryAnimator;
+    /**
+     * A toolbar strategy waiting to be loaded once animation ends
+     */
+    private IToolbarView mPendingToolbar = null;
+    /**
+     * The currently loaded toolbar strategy
+     */
+    private IToolbarView mLoadedToolbar = null;
     /**
      * The top/visible layout
      */
@@ -70,6 +67,31 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
      */
     private boolean mBottomShown;
 
+    private PendingToolbarRunnable mToolbarRunnable;
+
+    private ICallbacksListener mFragmentCallbacks;
+    private final Animator.AnimatorListener mSecondaryListener = new Animator.AnimatorListener() {
+        @Override
+        public void onAnimationStart(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animation) {
+            load(mPendingToolbar, mFragmentCallbacks);
+            onSecondaryAnimationEnded(animation);
+        }
+
+        @Override
+        public void onAnimationCancel(Animator animation) {
+
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animation) {
+
+        }
+    };
 
     public BaseToolbar(Context context) {
         super(context);
@@ -79,10 +101,10 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         super(context, attrs);
     }
 
+
     public BaseToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-
 
     @Override
     protected void onFinishInflate() {
@@ -110,7 +132,8 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         // if there is a toolbar waiting to be loaded
         // then load again and reset toolbar
         if (mPendingToolbar != null) {
-            mHandler.postDelayed(loadPendingRunnable, 100);
+            mToolbarRunnable = new PendingToolbarRunnable(this, mPendingToolbar);
+            mHandler.postDelayed(mToolbarRunnable, 100);
         }
     }
 
@@ -124,6 +147,16 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         TOOLBAR_HEIGHT = newHeight;
     }
 
+    @Override
+    public Context getActivityContext() {
+        return getContext();
+    }
+
+    @Override
+    public ICallbacksListener getFragmentCallbacks() {
+        return mFragmentCallbacks;
+    }
+
     private final void setBottomShown() {
         if (mBottomShown) {
             mBottomShown = false;
@@ -132,25 +165,20 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         }
     }
 
-    // if we tried to load a new toolbar strategy while a current load is running
-    // wait for it to finish and load this pending toolbar startegy
-    private final Runnable loadPendingRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (next(mPendingToolbar)) {
-                mPendingToolbar = null;
-            }
-        }
-    };
-
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        mHandler.removeCallbacks(loadPendingRunnable);
+        mHandler.removeCallbacks(mToolbarRunnable);
         mTopLayout = null;
         mBottomLayout = null;
         mPendingToolbar = null;
         mLoadedToolbar = null;
+        mFragmentCallbacks = null;
+
+        if (mToolbarRunnable != null) {
+            mToolbarRunnable.destroy();
+            mToolbarRunnable = null;
+        }
     }
 
     /**
@@ -160,7 +188,7 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
      * @return true if the pre-animation loads the toolbar inside this method body, so it wont load it again.
      * Return false otherwise
      */
-    public boolean onPerformPreAnimation(IToolbarStrategy nextToolbar) {
+    public boolean onPerformPreAnimation(IToolbarView nextToolbar) {
         return false;
     }
 
@@ -172,7 +200,7 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
      *
      * @param nextToolbar the toolbar to display in the next available layout
      */
-    public boolean next(@NonNull IToolbarStrategy nextToolbar) {
+    public boolean load(@NonNull IToolbarView nextToolbar, ICallbacksListener listener) {
         if (nextToolbar != null) {
             // if different toolbar is loaded while animation is running,
             // set as pending and execute when animation finish.
@@ -187,7 +215,10 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
                     return false;
                 }
                 mPendingToolbar = null;
+                mLoadedToolbar = nextToolbar;
+                mFragmentCallbacks = listener;
                 loadToolbar(nextToolbar);
+                Log.i("BaseToolbar", nextToolbar.toString());
                 return true;
             }
         } else {
@@ -195,13 +226,18 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         }
     }
 
-    private void loadToolbar(IToolbarStrategy nextToolbar) {
+    public boolean load(@NonNull IToolbarView nextToolbar) {
+        return load(nextToolbar, mFragmentCallbacks);
+    }
+
+    private void loadToolbar(IToolbarView nextToolbar) {
+        nextToolbar.setToolbarController(this);
+
         // get hidden layout, remove previous views from it and load the new layout
         FrameLayout hiddenLayout = (FrameLayout) getHiddenLayout();
         hiddenLayout.removeAllViews();
         hiddenLayout.addView((View) nextToolbar);
         animateLoad();
-        mLoadedToolbar = nextToolbar;
     }
 
     private void animateLoad() {
@@ -217,12 +253,17 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         }
     }
 
-    public final void setPendingToolbar(IToolbarStrategy pendingToolbar) {
+    public final void setPendingToolbar(IToolbarView pendingToolbar) {
         mPendingToolbar = pendingToolbar;
     }
 
-    public final IToolbarStrategy getLoadedToolbar() {
+    public final IToolbarView getLoadedToolbar() {
         return mLoadedToolbar;
+    }
+
+    @Nullable
+    public final ToolbarAnimation getPrimaryToolbarAnimation() {
+        return mPrimaryAnimation;
     }
 
     /**
@@ -236,15 +277,14 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         mPrimaryAnimation.onNewAnimationSet();
     }
 
-    @Nullable
-    public final ToolbarAnimation getPrimaryToolbarAnimation() {
-        return mPrimaryAnimation;
+    public final Animator getSecondaryAnimator() {
+        return mSecondaryAnimator;
     }
 
     /**
      * Sets the secondary animation to use when the next toolbar is different then current one.
      * <p/>
-     * Whether a toolbar is different then another, needs to be implemented in the {@link #onPerformPreAnimation(IToolbarStrategy)}
+     * Whether a toolbar is different then another, needs to be implemented in the {@link #onPerformPreAnimation(IToolbarView)}
      *
      * @param secondaryAnimator the animator to use
      */
@@ -253,35 +293,22 @@ public class BaseToolbar extends Toolbar implements IToolbarController {
         mSecondaryAnimator.addListener(mSecondaryListener);
     }
 
-    public final Animator getSecondaryAnimator() {
-        return mSecondaryAnimator;
-    }
-
-    private final Animator.AnimatorListener mSecondaryListener = new Animator.AnimatorListener() {
-        @Override
-        public void onAnimationStart(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animation) {
-            next(mPendingToolbar);
-            onSecondaryAnimationEnded(animation);
-        }
-
-        @Override
-        public void onAnimationCancel(Animator animation) {
-
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animation) {
-
-        }
-    };
-
     public void onSecondaryAnimationEnded(Animator animator) {
 
+    }
+
+    public final void isToolbarLoaded() {
+        if (getLoadedToolbar() == null) {
+            throw new NullPointerException("No toolbar loaded. Did you forget to load one using next() method?");
+        }
+    }
+
+    public interface ICallbacksListener {
+        void onRightTVClicked();
+
+        void onCloseClicked();
+
+        void onLeftTVClicked();
     }
 
 }

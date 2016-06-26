@@ -1,9 +1,10 @@
-package smart_toolbar.animations;
+package smart_toolbar.base.animations;
 
 import android.animation.ValueAnimator;
 import android.view.View;
 
-import smart_toolbar.base.IToolbarController;
+import smart_toolbar.base.toolbar.IToolbarController;
+
 
 /**
  * Created by yosimizrachi on 29/03/2016.

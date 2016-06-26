@@ -11,17 +11,17 @@ public class App extends Application {
 
     public static Context sContext;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        sContext = getApplicationContext();
-    }
-
     public static Context getAppContext() {
         return sContext;
     }
 
-    public static void toast(String text){
+    public static void toast(String text) {
         Toast.makeText(sContext, text, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        sContext = getApplicationContext();
     }
 }

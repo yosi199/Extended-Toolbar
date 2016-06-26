@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,8 +8,8 @@
 
     <include
         android:id="@+id/smart_toolbar"
-        layout="@layout/height_toolbar"
-        android:gravity="center"/>
+        layout="@layout/custom_height_toolbar"
+        android:gravity="center" />
 
     <Button
         android:id="@+id/switchBtn1"
@@ -19,7 +18,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="20dp"
-        android:text="First"/>
+        android:text="First" />
 
     <Button
         android:id="@+id/switchBtn2"
@@ -28,7 +27,7 @@
         android:layout_below="@id/switchBtn1"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:text="Second"/>
+        android:text="Second" />
 
     <Button
         android:id="@+id/switchBtn3"
@@ -37,7 +36,7 @@
         android:layout_below="@id/switchBtn2"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:text="Third"/>
+        android:text="Third" />
 
     <Button
         android:id="@+id/switchBtn4"
@@ -46,7 +45,7 @@
         android:layout_below="@id/switchBtn3"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:text="Fourth"/>
+        android:text="Fourth" />
 
     <Button
         android:id="@+id/changeAnim"
@@ -55,7 +54,7 @@
         android:layout_below="@id/switchBtn4"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
-        android:text="Change Animation"/>
+        android:text="Change Animation" />
 
 
 </RelativeLayout>

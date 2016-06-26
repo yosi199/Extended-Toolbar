@@ -1,14 +1,14 @@
-package smart_toolbar.animations;
+package smart_toolbar.base.animations;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.RelativeLayout;
 
-import smart_toolbar.base.IToolbarController;
+import smart_toolbar.base.toolbar.IToolbarController;
 
 
 /**
@@ -30,16 +30,14 @@ public abstract class BaseToolbarAnimation implements
      * The toolbar interface to have callbacks with
      */
     private final IToolbarController mToolbarController;
-
-    /**
-     * boolean indicating whether animation is reversing or not
-     */
-    private boolean isReversing;
-
     /**
      * Toolbar height
      */
     public int mHeight;
+    /**
+     * boolean indicating whether animation is reversing or not
+     */
+    private boolean isReversing;
 
     public BaseToolbarAnimation(IToolbarController toolbarController) {
         mToolbarController = toolbarController;
@@ -89,7 +87,7 @@ public abstract class BaseToolbarAnimation implements
      * @param params the newly changed params
      */
     @Override
-    public final void onToolbarLayoutChanges(RelativeLayout.LayoutParams params) {
+    public final void onToolbarLayoutChanges(ViewGroup.LayoutParams params) {
         mHeight = params.height;
         getHiddenView().setTranslationY(mHeight);
         initAnimator(mValueAnimator);

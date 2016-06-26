@@ -1,6 +1,6 @@
-package smart_toolbar.animations;
+package smart_toolbar.base.animations;
 
-import android.widget.RelativeLayout;
+import android.view.ViewGroup;
 
 /**
  * Created by yosimizrachi on 29/03/2016.
@@ -15,6 +15,6 @@ public interface ToolbarAnimation {
 
     void onNewAnimationSet();
 
-    void onToolbarLayoutChanges(RelativeLayout.LayoutParams params);
+    void onToolbarLayoutChanges(ViewGroup.LayoutParams params);
 
 }

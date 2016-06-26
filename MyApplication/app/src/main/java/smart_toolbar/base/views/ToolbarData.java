@@ -1,4 +1,4 @@
-package smart_toolbar.base;
+package smart_toolbar.base.views;
 
 /**
  * Created by yosimizrachi on 03/04/2016.
