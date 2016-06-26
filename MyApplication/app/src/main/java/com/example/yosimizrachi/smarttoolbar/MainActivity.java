@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.switchBtn2).setOnClickListener(this);
         findViewById(R.id.switchBtn3).setOnClickListener(this);
         findViewById(R.id.switchBtn4).setOnClickListener(this);
-        findViewById(R.id.print_visible).setOnClickListener(this);
 
         mChangeAnimation = findViewById(R.id.changeAnim);
         mChangeAnimation.setOnClickListener(this);
