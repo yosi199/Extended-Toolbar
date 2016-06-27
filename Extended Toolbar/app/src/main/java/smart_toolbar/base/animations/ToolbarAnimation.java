@@ -11,6 +11,8 @@ public interface ToolbarAnimation {
 
     void reverse();
 
+    void cancel();
+
     boolean isRunning();
 
     void onNewAnimationSet();

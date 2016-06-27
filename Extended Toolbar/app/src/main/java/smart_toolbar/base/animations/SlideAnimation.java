@@ -1,8 +1,6 @@
 package smart_toolbar.base.animations;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.util.Log;
 import android.view.View;
 
 import smart_toolbar.base.toolbar.ToolbarControllerInterface;
@@ -17,6 +15,9 @@ public class SlideAnimation extends BaseToolbarAnimation {
         super(toolbarController);
     }
 
+    View visibleView;
+    View hiddenView;
+
     @Override
     void initAnimator(ValueAnimator animator) {
         animator.setFloatValues(-mHeight, 0);
@@ -28,25 +29,29 @@ public class SlideAnimation extends BaseToolbarAnimation {
 
         float value = (float) animation.getAnimatedValue();
 
-        View visibleView = getVisibleView();
-        View hiddenView = getHiddenView();
 
         if (isReversing()) {
             hiddenView.setTranslationY(mHeight + value);
             visibleView.setTranslationY(value);
         } else {
-            hiddenView.setTranslationY(value);
-            visibleView.setTranslationY(mHeight + value);
+            hiddenView.setTranslationY(mHeight + value);
+            visibleView.setTranslationY(value);
         }
+
     }
 
     @Override
     public void onNewAnimationSet() {
-        getHiddenView().setAlpha(1f);
-        getVisibleView().setAlpha(1f);
 
-        getHiddenView().setTranslationY(-mHeight);
-        getVisibleView().setTranslationY(0);
+        visibleView = getVisibleView();
+        hiddenView = getHiddenView();
+
+        hiddenView.setAlpha(1f);
+        visibleView.setAlpha(1f);
+
+        hiddenView.setTranslationY(-mHeight);
+        visibleView.setTranslationY(0);
+
     }
 
 

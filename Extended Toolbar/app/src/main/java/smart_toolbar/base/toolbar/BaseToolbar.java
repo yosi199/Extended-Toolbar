@@ -168,6 +168,7 @@ public class BaseToolbar extends Toolbar implements ToolbarControllerInterface {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
+        getPrimaryToolbarAnimation().cancel();
         mHandler.removeCallbacks(mToolbarRunnable);
         mTopLayout = null;
         mBottomLayout = null;
@@ -190,6 +191,10 @@ public class BaseToolbar extends Toolbar implements ToolbarControllerInterface {
      */
     public boolean onPerformPreAnimation(ToolbarViewInterface nextToolbar) {
         return false;
+    }
+
+    public boolean load(@NonNull ToolbarViewInterface nextToolbar) {
+        return load(nextToolbar, mFragmentCallbacks);
     }
 
     /**
@@ -226,10 +231,6 @@ public class BaseToolbar extends Toolbar implements ToolbarControllerInterface {
         }
     }
 
-    public boolean load(@NonNull ToolbarViewInterface nextToolbar) {
-        return load(nextToolbar, mFragmentCallbacks);
-    }
-
     private void loadToolbar(ToolbarViewInterface nextToolbar) {
         nextToolbar.setToolbarController(this);
 
@@ -250,6 +251,8 @@ public class BaseToolbar extends Toolbar implements ToolbarControllerInterface {
                     mPrimaryAnimation.start();
                 }
             }
+        } else {
+            onPrimaryAnimationEnded();
         }
     }
 

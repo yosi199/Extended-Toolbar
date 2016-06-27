@@ -87,6 +87,13 @@ public abstract class BaseToolbarAnimation implements
         }
     }
 
+    @Override
+    public void cancel() {
+        if (mValueAnimator != null) {
+            mValueAnimator.cancel();
+        }
+    }
+
     /**
      * If toolbar layout has changed, the animation should be updated accordingly
      *

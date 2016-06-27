@@ -82,7 +82,6 @@ public class CustomHeightToolbar extends BaseToolbar implements
         }
     }
 
-
     @Override
     public void setRightBtnText(String text) {
         isToolbarLoaded();
