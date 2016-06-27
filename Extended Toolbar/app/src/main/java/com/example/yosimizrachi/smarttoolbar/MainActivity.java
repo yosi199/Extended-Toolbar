@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         toolbar = (BaseToolbar) findViewById(R.id.smart_toolbar);
-        toolbar.setPrimaryToolbarAnimation(new SlideAnimation(toolbar));
         toolbar.load(ToolbarExample1.getInstance());
 
         findViewById(R.id.switchBtn1).setOnClickListener(this);

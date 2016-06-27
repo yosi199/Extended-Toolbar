@@ -21,10 +21,10 @@ import smart_toolbar.base.views.ToolbarViewInterface;
 /**
  * Created by yosimizrachi on 05/04/2016.
  * <p/>
- * The base class for toolbar.
+ * The base class for the extended toolbar.
  * <p/>
  * With swappable primary animations and optional secondary animation to be performed when different toolbars type are loaded
- * (Example - different height toolbar will be animate the height adjustment).
+ * (Example - different height toolbar will animate the height adjustment).
  */
 public class BaseToolbar extends Toolbar implements ToolbarControllerInterface {
 

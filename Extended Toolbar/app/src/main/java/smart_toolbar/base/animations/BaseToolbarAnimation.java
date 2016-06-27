@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.example.yosimizrachi.smarttoolbar.App;
 import com.example.yosimizrachi.smarttoolbar.R;
 
+import smart_toolbar.base.toolbar.BaseToolbar;
 import smart_toolbar.base.toolbar.ToolbarControllerInterface;
 
 
@@ -23,6 +23,8 @@ public abstract class BaseToolbarAnimation implements
         ToolbarAnimation,
         ValueAnimator.AnimatorUpdateListener,
         Animator.AnimatorListener {
+
+    private final int mPrimaryAnimDuration;
 
     /**
      * Default animator to use
@@ -43,6 +45,7 @@ public abstract class BaseToolbarAnimation implements
     private boolean isReversing;
 
     public BaseToolbarAnimation(ToolbarControllerInterface toolbarController) {
+        mPrimaryAnimDuration = ((BaseToolbar) toolbarController).getContext().getResources().getInteger(R.integer.primary_anim_duration);
         mToolbarController = toolbarController;
         mHeight = mToolbarController.getToolbarHeight();
         init();
@@ -51,7 +54,7 @@ public abstract class BaseToolbarAnimation implements
     public void init() {
         mValueAnimator.setFloatValues(0, -mHeight);
         mValueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        mValueAnimator.setDuration(App.getAppContext().getResources().getInteger(R.integer.fade_anim_duration));
+        mValueAnimator.setDuration(mPrimaryAnimDuration);
         mValueAnimator.addUpdateListener(this);
         mValueAnimator.addListener(this);
         initAnimator(mValueAnimator);

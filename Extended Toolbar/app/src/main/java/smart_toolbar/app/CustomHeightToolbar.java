@@ -7,7 +7,8 @@ import android.util.AttributeSet;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.RelativeLayout;
 
-import smart_toolbar.base.animations.SlideAnimation;
+import com.example.yosimizrachi.smarttoolbar.R;
+
 import smart_toolbar.base.toolbar.BaseToolbar;
 import smart_toolbar.base.toolbar.CustomBehaviourInterface;
 import smart_toolbar.base.views.ToolbarViewInterface;
@@ -20,37 +21,36 @@ public class CustomHeightToolbar extends BaseToolbar implements
         ValueAnimator.AnimatorUpdateListener,
         CustomBehaviourInterface {
 
+    private final int mSecondaryAnimDuration;
     private ValueAnimator heightAnimator;
 
     public CustomHeightToolbar(Context context) {
         super(context);
+        mSecondaryAnimDuration = context.getResources().getInteger(R.integer.secondary_anim_duration);
     }
 
     public CustomHeightToolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        mSecondaryAnimDuration = context.getResources().getInteger(R.integer.secondary_anim_duration);
     }
 
     public CustomHeightToolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mSecondaryAnimDuration = context.getResources().getInteger(R.integer.secondary_anim_duration);
     }
-
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        setSecondaryAnimation();
+        initSecondaryAnimation();
     }
 
-    private void setSecondaryAnimation() {
+    private void initSecondaryAnimation() {
         heightAnimator = new ValueAnimator();
         heightAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        heightAnimator.setDuration(200);
+        heightAnimator.setDuration(mSecondaryAnimDuration);
         heightAnimator.addUpdateListener(this);
         setSecondaryAnimator(heightAnimator);
-    }
-
-    private void setPrimarySlideAnimation() {
-        setPrimaryToolbarAnimation(new SlideAnimation(this));
     }
 
     @Override
